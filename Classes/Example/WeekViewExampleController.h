@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Matias Muhonen <mmu@iki.fi>
+ * Copyright (c) 2010-2012 Matias Muhonen <mmu@iki.fi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,10 @@
 #import <UIKit/UIKit.h>
 #import "MAWeekView.h" // MAWeekViewDataSource,MAWeekViewDelegate
 
+@class MAEventKitDataSource;
+
 @interface WeekViewExampleController : UIViewController<MAWeekViewDataSource,MAWeekViewDelegate> {
+    MAEventKitDataSource *_eventKitDataSource;
 }
 
 @end

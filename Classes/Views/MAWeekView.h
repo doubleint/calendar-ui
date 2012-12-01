@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Matias Muhonen <mmu@iki.fi>
+ * Copyright (c) 2010-2012 Matias Muhonen <mmu@iki.fi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,8 +29,8 @@
 
 @class MAGridView;
 @class MAHourView;
-@class MAWeekdayView;
-@class MAEventGridView;
+@class MAWeekdayBarView;
+@class MAAllDayEventView;
 @class MAEvent;
 
 @protocol MAWeekViewDataSource, MAWeekViewDelegate;
@@ -40,11 +40,11 @@
 	UIButton *_leftArrow, *_rightArrow;
 	UILabel *_dateLabel;
 	
-	MAEventGridView *_allDayEventView;
+	MAAllDayEventView *_allDayEventView;
 	UIScrollView *_scrollView;
 	MAGridView *_gridView;
 	MAHourView *_hourView;
-	MAWeekdayView *_weekdayView;
+	MAWeekdayBarView *_weekdayBarView;
 	
 	unsigned int _labelFontSize;
 	UIFont *_regularFont;
