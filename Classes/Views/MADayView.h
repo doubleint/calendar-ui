@@ -60,6 +60,7 @@
 @property (nonatomic,assign) BOOL autoScrollToFirstEvent;
 @property (readwrite,assign) unsigned int labelFontSize;
 @property (nonatomic,copy) NSDate *day;
+@property (nonatomic, copy) void (^dateAction)(void);
 @property (nonatomic,unsafe_unretained) IBOutlet id<MADayViewDataSource> dataSource;
 @property (nonatomic,unsafe_unretained) IBOutlet id<MADayViewDelegate> delegate;
 

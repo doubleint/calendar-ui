@@ -37,7 +37,7 @@ static const unsigned int SPACE_BETWEEN_HOUR_LABELS      = 3;
 static const unsigned int DEFAULT_LABEL_FONT_SIZE        = 12;
 static const unsigned int ALL_DAY_VIEW_EMPTY_SPACE       = 3;
 
-static NSString *TOP_BACKGROUND_IMAGE                    = @"ma_topBackground.png";
+static NSString *TOP_BACKGROUND_IMAGE                    = @"navbar";
 static NSString *LEFT_ARROW_IMAGE                        = @"ma_leftArrow.png";
 static NSString *RIGHT_ARROW_IMAGE                       = @"ma_rightArrow.png";
 static const unsigned int ARROW_LEFT                     = 0;
@@ -110,6 +110,7 @@ static const unsigned int TOP_BACKGROUND_HEIGHT          = 35;
 - (NSDate *)nextDayFromDate:(NSDate *)date;
 - (NSDate *)previousDayFromDate:(NSDate *)date;
 - (void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer;
+- (void)_dateAction:(id)sender;
 
 @property (readonly) UIImageView *topBackground;
 @property (readonly) UIButton *leftArrow;
@@ -166,7 +167,7 @@ static const unsigned int TOP_BACKGROUND_HEIGHT          = 35;
 - (void)layoutSubviews {
 	self.topBackground.frame = CGRectMake(CGRectGetMinX(self.bounds),
 										  CGRectGetMinY(self.bounds),
-										  CGRectGetWidth(self.bounds), TOP_BACKGROUND_HEIGHT + 10);
+										  CGRectGetWidth(self.bounds), TOP_BACKGROUND_HEIGHT + 9);
 	self.leftArrow.frame = CGRectMake(CGRectGetMinX(self.topBackground.bounds),
 									  (int) (CGRectGetHeight(self.topBackground.bounds) - ARROW_HEIGHT) / 2,
 									  ARROW_WIDTH, ARROW_HEIGHT);
@@ -199,6 +200,7 @@ static const unsigned int TOP_BACKGROUND_HEIGHT          = 35;
 - (UIImageView *)topBackground {
 	if (!_topBackground) {
 		_topBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:TOP_BACKGROUND_IMAGE]];
+
 	}
 	return _topBackground;
 }
@@ -228,8 +230,13 @@ static const unsigned int TOP_BACKGROUND_HEIGHT          = 35;
 		_dateLabel = [[UILabel alloc] init];
 		_dateLabel.textAlignment = UITextAlignmentCenter;
 		_dateLabel.backgroundColor = [UIColor clearColor];
-		_dateLabel.font = [UIFont boldSystemFontOfSize:18];
-		_dateLabel.textColor = [UIColor colorWithRed:59/255. green:73/255. blue:88/255. alpha:1];
+		_dateLabel.font = [UIFont boldSystemFontOfSize:20];
+		_dateLabel.textColor = [UIColor whiteColor];
+    _dateLabel.shadowColor = [UIColor colorWithWhite:0.f alpha:.5f];
+    _dateLabel.shadowOffset = CGSizeMake(0.f, -1.f);
+    _dateLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dateAction:)];
+    [_dateLabel addGestureRecognizer:tap];
 	}
 	return _dateLabel;
 }
@@ -369,6 +376,11 @@ static const unsigned int TOP_BACKGROUND_HEIGHT          = 35;
 	}
 }
 
+- (void)_dateAction:(id)sender {
+  if (self.dateAction)
+    self.dateAction();
+}
+
 - (NSDate *)nextDayFromDate:(NSDate *)date {
 	NSDateComponents *components = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:date];
 	[components setDay:[components day] + 1];
@@ -458,6 +470,12 @@ static const CGFloat kCorner       = 5.0;
 				  withFont:self.textFont
 			 lineBreakMode:UILineBreakModeTailTruncation
 				 alignment:UITextAlignmentLeft];
+}
+
+- (void)setTextColor:(UIColor *)textColor {
+  _textColor = textColor;
+  [self.layer setBorderColor:textColor.CGColor];
+  [self.layer setBorderWidth:1.f];
 }
 
 - (void)tapDetectingView:(TapDetectingView *)view gotSingleTapAtPoint:(CGPoint)tapPoint {
